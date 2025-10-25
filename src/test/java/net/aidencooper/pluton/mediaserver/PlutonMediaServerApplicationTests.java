@@ -1,4 +1,4 @@
-package net.aidencooper.pluton;
+package net.aidencooper.pluton.mediaserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
