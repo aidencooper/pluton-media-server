@@ -30,13 +30,13 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
-	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
     implementation("com.github.kokorin.jaffree:jaffree:2024.08.29")
+	implementation("org.hibernate.orm:hibernate-community-dialects")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 
-	runtimeOnly("org.postgresql:postgresql")
+	runtimeOnly("org.xerial:sqlite-jdbc")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
