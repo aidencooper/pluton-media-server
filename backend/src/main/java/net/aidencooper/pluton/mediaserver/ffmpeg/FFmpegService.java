@@ -8,6 +8,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
+import java.util.concurrent.CompletableFuture;
+
+// https://trac.ffmpeg.org/wiki
+
+// https://trac.ffmpeg.org/wiki/Encode/H.264
+// https://trac.ffmpeg.org/wiki/Encode/H.265
 
 @Service
 public class FFmpegService {
@@ -17,27 +23,36 @@ public class FFmpegService {
         this.transcodeManager = transcodeManager;
     }
 
-    @Async
-    public void transcode(Path filePath, Path streamDir, String movieName) {
-        try {
+    @Async("ffmpegExecutor")
+    public CompletableFuture<Void> transcode(Path filePath, Path streamDir) {
+        return CompletableFuture.runAsync(() -> {
             FFmpeg.atPath() // Need to have ffmpeg installed
                     .addInput(UrlInput.fromPath(filePath))
                     .addOutput(
                             UrlOutput.toPath(streamDir.resolve("master.m3u8"))
                                     .setFormat("hls")
                                     .addArguments("-hls_time", "6") // Every .ts segment is 6 seconds long
-                                    .addArguments("-hls_list_size", "0") // Keep all .ts segments
-                                    .addArguments("-hls_playlist_type", "vod") // video on demand
+                                    .addArguments("-hls_list_size", "6") // Amount of segments in the playlist (0 = all)
+                                    .addArguments("-hls_playlist_type", "event") // VOD (Immutable) vs Event (Mutable)
                                     .addArguments("-hls_segment_filename", // segment_000.ts segment_001.ts
                                             streamDir.resolve("segment_%03d.ts").toString())
+                                    // Video settings
                                     .addArguments("-c:v", "libx264") // H.264 video codec
-                                    .addArguments("-preset", "veryfast") // encoding speed to compression efficiency ratio
-                                    .addArguments("-crf", "23") // video bitrate
+                                    .addArguments("-preset", "veryfast") // Higher encoding speed : less compression
+                                    .addArguments("-crf", "30") // Video bitrate
+                                    .addArguments("-profile:v", "baseline")
+                                    .addArguments("-level", "3.0") // Compatibility level
+                                    .addArguments("-pix_fmt", "yuv420p") // Pixel format
+                                    // Audio settings
                                     .addArguments("-c:a", "aac") // AAC audio codec
-                                    .addArguments("-b:a", "128k") // audio bitrate
+                                    .addArguments("-b:a", "128k") // Audio bitrate
+                                    .addArguments("-ar", "48000") // Standard sample rate
+                                    .addArguments("-ac", "2") // Stereo audio
+                                    // Segment settings
+                                    .addArguments("-f", "hls")
+                                    .addArguments("-bsf:v", "h264_mp4toannexb")
+                                    .addArgument("-sn")
                     ).execute();
-        } finally {
-            this.transcodeManager.finishJob(movieName);
-        }
+        });
     }
 }

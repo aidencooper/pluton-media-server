@@ -30,11 +30,16 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
+	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 
     implementation("com.github.kokorin.jaffree:jaffree:2024.08.29")
-	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	runtimeOnly("org.postgresql:postgresql")
+
+	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

@@ -21,7 +21,7 @@ public class VideoService {
     }
 
     public String stream(String movieName) {
-        Path inputPath = Paths.get(Constants.MOVIE_PATH, movieName + ".mp4");
+        Path inputPath = Paths.get(Constants.MOVIE_PATH, movieName + ".mkv");
         Path outputDir = Paths.get(Constants.STREAM_PATH, movieName);
 
         if(!Files.exists(inputPath)) throw new RuntimeException("File not found: " + inputPath);
@@ -31,7 +31,7 @@ public class VideoService {
 
         Path playlist = outputDir.resolve("master.m3u8");
 
-        if(!Files.exists(playlist) && this.transcodeManager.startJob(movieName)) this.ffmpegService.transcode(inputPath, outputDir, movieName);
+        if(!Files.exists(playlist) && this.transcodeManager.startJob(movieName)) this.ffmpegService.transcode(inputPath, outputDir).thenRun(() -> this.transcodeManager.finishJob(movieName));
 
         return "/streams/" + movieName + "/master.m3u8";
     }

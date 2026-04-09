@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/movies/**").addResourceLocations("file:" + Constants.MOVIE_PATH);
         registry.addResourceHandler("/streams/**").addResourceLocations("file:" + Constants.STREAM_PATH);
     }
 }
