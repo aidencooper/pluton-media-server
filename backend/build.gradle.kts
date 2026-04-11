@@ -33,9 +33,10 @@ dependencies {
 
     implementation("com.github.kokorin.jaffree:jaffree:2024.08.29")
 	implementation("org.hibernate.orm:hibernate-community-dialects")
+	implementation("org.modelmapper:modelmapper:3.2.6")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
 
 	runtimeOnly("org.xerial:sqlite-jdbc")
 

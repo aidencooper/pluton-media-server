@@ -1,5 +1,6 @@
 package net.aidencooper.pluton.mediaserver.library;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,9 +9,11 @@ import java.util.Optional;
 @Service
 public class LibraryService {
     private final LibraryRepository libraryRepository;
+    private final ModelMapper modelMapper;
 
-    public LibraryService(LibraryRepository libraryRepository) {
+    public LibraryService(LibraryRepository libraryRepository, ModelMapper modelMapper) {
         this.libraryRepository = libraryRepository;
+        this.modelMapper = modelMapper;
     }
 
     public Library createLibrary(Library library) {
@@ -75,5 +78,9 @@ public class LibraryService {
 
     public long countLibraries() {
         return this.libraryRepository.count();
+    }
+
+    public LibraryDTO getLibrary(Long id) {
+        return this.modelMapper.map(this.libraryRepository.getReferenceById(id), LibraryDTO.class);
     }
 }

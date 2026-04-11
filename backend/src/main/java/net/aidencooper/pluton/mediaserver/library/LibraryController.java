@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/libraries")
@@ -16,42 +17,58 @@ public class LibraryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Library>> getLibraries() {
-        return ResponseEntity.ok(this.libraryService.get());
+    public ResponseEntity<List<LibraryDTO>> getLibraries() {
+        return ResponseEntity.ok(this.libraryService.get().stream()
+                .map(library -> this.libraryService.getLibrary(
+                        library.getId()
+                )).collect(Collectors.toList()));
     }
 
     @GetMapping("/enabled")
-    public ResponseEntity<List<Library>> getEnabledLibraries() {
-        return ResponseEntity.ok(this.libraryService.getEnabled());
+    public ResponseEntity<List<LibraryDTO>> getEnabledLibraries() {
+        return ResponseEntity.ok(this.libraryService.getEnabled().stream()
+                .map(library -> this.libraryService.getLibrary(
+                        library.getId()
+                )).collect(Collectors.toList()));
     }
 
     @GetMapping("/contentType/{contentType}")
-    public ResponseEntity<List<Library>> getLibrariesByContentType(@PathVariable ContentType contentType) {
-        return ResponseEntity.ok(this.libraryService.getByContentType(contentType));
+    public ResponseEntity<List<LibraryDTO>> getLibrariesByContentType(@PathVariable ContentType contentType) {
+        return ResponseEntity.ok(this.libraryService.getByContentType(contentType).stream()
+                .map(library -> this.libraryService.getLibrary(
+                        library.getId()
+                )).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Library> getLibraryById(@PathVariable Long id) {
+    public ResponseEntity<LibraryDTO> getLibraryById(@PathVariable Long id) {
         return this.libraryService.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(library -> ResponseEntity.ok(this.libraryService.getLibrary(
+                        library.getId()
+                ))).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Library> createLibrary(@RequestBody Library library) {
+    public ResponseEntity<LibraryDTO> createLibrary(@RequestBody Library library) {
         try {
-            Library createdLibrary = this.libraryService.createLibrary(library);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdLibrary);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(this.libraryService.getLibrary(
+                            this.libraryService.createLibrary(library).getId()
+                    ));
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().build();
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Library> updateLibrary(@PathVariable Long id, @RequestBody Library library) {
+    public ResponseEntity<LibraryDTO> updateLibrary(@PathVariable Long id, @RequestBody Library library) {
         try {
-            Library updatedLibrary = this.libraryService.updateLibrary(id, library);
-            return ResponseEntity.ok(updatedLibrary);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(this.libraryService.getLibrary(
+                            this.libraryService.updateLibrary(id, library).getId()
+                    ));
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().build();
         }
