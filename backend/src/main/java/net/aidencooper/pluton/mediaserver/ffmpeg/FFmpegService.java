@@ -53,6 +53,6 @@ public class FFmpegService {
                                     .addArguments("-bsf:v", "h264_mp4toannexb")
                                     .addArgument("-sn")
                     ).execute();
-        });
+        }).thenRun(() -> System.out.println(filePath.getFileName().toString()));
     }
 }
