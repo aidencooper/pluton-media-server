@@ -1,8 +1,7 @@
-package net.aidencooper.pluton.mediaserver.library;
+package net.aidencooper.pluton.mediaserver.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -13,16 +12,33 @@ import java.util.List;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "libraries")
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Library {
+    // Database
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
+    @CreatedDate
+    @Column(name = "created_at", updatable = false, nullable = false)
+    private Instant createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt;
+
+    // Object
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "content_type", nullable = false)
-    private ContentType contentType;
+    @Column(name = "type", nullable = false)
+    private LibraryType type;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
@@ -32,25 +48,6 @@ public class Library {
     @Column(name = "folder_paths", nullable = false)
     private List<String> folderPaths;
 
-    @Column(name = "display_name", nullable = false)
-    private String displayName;
-
     @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
-
-    @CreatedDate
-    @Column(name = "created_at")
-    private Instant createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private Instant updatedAt;
-
-    public Library() {}
-
-    public Library(ContentType contentType, List<String> folderPath, String displayName) {
-        this.contentType = contentType;
-        this.folderPaths = folderPath;
-        this.displayName = displayName;
-    }
 }

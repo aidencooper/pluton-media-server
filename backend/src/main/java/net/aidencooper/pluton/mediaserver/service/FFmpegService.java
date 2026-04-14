@@ -1,9 +1,8 @@
-package net.aidencooper.pluton.mediaserver.ffmpeg;
+package net.aidencooper.pluton.mediaserver.service;
 
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
 import com.github.kokorin.jaffree.ffmpeg.UrlInput;
 import com.github.kokorin.jaffree.ffmpeg.UrlOutput;
-import net.aidencooper.pluton.mediaserver.transcode.TranscodeManager;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package net.aidencooper.pluton.mediaserver.transcode;
+package net.aidencooper.pluton.mediaserver.service;
 
 import org.springframework.stereotype.Service;
 

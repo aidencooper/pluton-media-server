@@ -1,8 +1,6 @@
-package net.aidencooper.pluton.mediaserver.video;
+package net.aidencooper.pluton.mediaserver.service;
 
 import net.aidencooper.pluton.mediaserver.Constants;
-import net.aidencooper.pluton.mediaserver.ffmpeg.FFmpegService;
-import net.aidencooper.pluton.mediaserver.transcode.TranscodeManager;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

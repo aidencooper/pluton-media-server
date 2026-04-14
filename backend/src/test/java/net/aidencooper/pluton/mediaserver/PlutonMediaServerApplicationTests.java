@@ -9,5 +9,4 @@ class PlutonMediaServerApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

@@ -1,5 +1,7 @@
-package net.aidencooper.pluton.mediaserver.library;
+package net.aidencooper.pluton.mediaserver.repository;
 
+import net.aidencooper.pluton.mediaserver.domain.entity.LibraryType;
+import net.aidencooper.pluton.mediaserver.domain.entity.Library;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,15 +12,10 @@ import java.util.Optional;
 
 @Repository
 public interface LibraryRepository extends JpaRepository<Library, Long> {
-    List<Library> findByContentType(ContentType contentType);
-    List<Library> findEnabledByContentType(ContentType contentType);
+    Optional<Library> findByName(String name);
+    List<Library> findByType(LibraryType type);
     List<Library> findByEnabledTrue();
-    Optional<Library> findByDisplayName(String displayName);
 
     @Query("SELECT library FROM Library library JOIN library.folderPaths fp WHERE fp = :folderPath")
     List<Library> findByFolderPath(@Param("folderPath") String folderPath);
-    boolean existsByDisplayName(String displayName);
-
-    @Query("SELECT COUNT(library) > 0 FROM Library library JOIN library.folderPaths fp WHERE fp = :folderPath")
-    boolean existsByFolderPath(String folderPath);
 }

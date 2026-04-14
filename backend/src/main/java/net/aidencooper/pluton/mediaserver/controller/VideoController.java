@@ -1,12 +1,13 @@
-package net.aidencooper.pluton.mediaserver.video;
+package net.aidencooper.pluton.mediaserver.controller;
 
+import net.aidencooper.pluton.mediaserver.service.VideoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/video")
+@RequestMapping("/api/v1/video")
 public class VideoController {
     private final VideoService videoService;
 
