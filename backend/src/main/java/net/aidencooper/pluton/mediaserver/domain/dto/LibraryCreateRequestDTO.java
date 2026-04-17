@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import net.aidencooper.pluton.mediaserver.domain.entity.LibraryType;
 import org.hibernate.validator.constraints.Length;
 
-import java.util.List;
+import java.util.Set;
 
 public record LibraryCreateRequestDTO(
         @NotBlank(message = NAME_LENGTH_ERROR_MESSAGE)
@@ -15,7 +15,7 @@ public record LibraryCreateRequestDTO(
         @NotNull(message = TYPE_ERROR_MESSAGE)
         LibraryType type,
         @NotEmpty(message = FOLDER_PATHS_SIZE_ERROR_MESSAGE)
-        List<String> folderPaths,
+        Set<String> folderPaths,
         boolean enabled
 ) {
     private static final String NAME_LENGTH_ERROR_MESSAGE = "Name must be between 1 and 32 characters";

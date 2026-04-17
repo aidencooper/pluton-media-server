@@ -7,7 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -46,7 +46,7 @@ public class Library {
             joinColumns = @JoinColumn(name = "library_id")
     )
     @Column(name = "folder_paths", nullable = false)
-    private List<String> folderPaths;
+    private Set<String> folderPaths;
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
