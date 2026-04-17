@@ -16,19 +16,19 @@ public class SQLiteConfig {
     private final String username;
     private final String password;
 
-    public SQLiteConfig(PlatformConfig platformConfig, @Value("${spring.datasource.username}") String username, @Value("${spring.datasource.password}") String password) {
+    public SQLiteConfig(PlatformProperties platformProperties, @Value("${spring.datasource.username}") String username, @Value("${spring.datasource.password}") String password) {
         this.driverClassName = "org.sqlite.JDBC";
-        this.url = "jdbc:sqlite:" + platformConfig.getPlutonConfigPath() + "/pluton.db";
+        this.url = "jdbc:sqlite:" + platformProperties.getConfigPath() + "/pluton.db";
         this.username = username;
         this.password = password;
     }
 
     @Bean
-    public DataSource dataSource(PlatformConfig platformConfig) {
+    public DataSource dataSource(PlatformProperties platformProperties) {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName("org.sqlite.JDBC");
-        dataSource.setUrl("jdbc:sqlite:" + platformConfig.getPlutonConfigPath() + "/pluton.db");
+        dataSource.setUrl("jdbc:sqlite:" + platformProperties.getConfigPath() + "/pluton.db");
         dataSource.setUsername(this.username);
         dataSource.setPassword(this.password);
 
