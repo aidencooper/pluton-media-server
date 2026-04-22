@@ -1,5 +1,6 @@
 package net.aidencooper.pluton.mediaserver.controller;
 
+import lombok.Getter;
 import net.aidencooper.pluton.mediaserver.service.VideoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/video")
+@Getter
 public class VideoController {
     private final VideoService videoService;
 
@@ -17,6 +19,6 @@ public class VideoController {
 
     @GetMapping("/{movieName}/stream")
     public String stream(@PathVariable String movieName) {
-        return this.videoService.stream(movieName);
+        return this.getVideoService().stream(movieName);
     }
 }

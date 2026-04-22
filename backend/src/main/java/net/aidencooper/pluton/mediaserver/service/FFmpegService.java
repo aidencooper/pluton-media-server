@@ -3,6 +3,7 @@ package net.aidencooper.pluton.mediaserver.service;
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
 import com.github.kokorin.jaffree.ffmpeg.UrlInput;
 import com.github.kokorin.jaffree.ffmpeg.UrlOutput;
+import lombok.Getter;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 // https://trac.ffmpeg.org/wiki/Encode/H.265
 
 @Service
+@Getter
 public class FFmpegService {
     private final TranscodeManager transcodeManager;
 
