@@ -25,6 +25,9 @@ public class MediaScannerService implements IMediaScannerService {
     private static final Set<String> PIC_EXTENSIONS = Set.of(".jpg", ".jpeg", ".jpe", ".jfif", ".jfi", ".png", ".apng", ".gif", ".webp", ".bmp", ".dib", ".tiff", ".tif", ".heif", ".heic", ".hif", ".avif");
     private static final Set<String> VIDEO_EXTENSIONS = Set.of(".mp4", ".mkv", ".avi", ".mov", ".wmv", ".flv", ".webm", ".m4v");
 
+    private static final Pattern FOLDER_NAME_PATTERN = Pattern.compile("^(.+?)\\s*(?:\\[(tmdbid-\\d+)]|\\((\\d{4})\\))?\\s*(?:\\[(tmdbid-\\d+)]|\\((\\d{4})\\))?$"); // name (1), year (3) or (5), tmdbid (2) or (4)
+    private static final Pattern TV_EPISODE_PATTERN = Pattern.compile("");
+
     private static final Pattern TMDB_ID_PATTERN = Pattern.compile("\\[tmdbid-(\\d+)]");
     private static final Pattern YEAR_PATTERN = Pattern.compile("^((19|2[0-9])[0-9]{2})");
 
@@ -62,18 +65,38 @@ public class MediaScannerService implements IMediaScannerService {
     }
 
     private void scanMoviesFolder(Path root) throws IOException {
+        // /Movies/F1 (2025)/F1 (2025).mkv
         try(Stream<Path> paths = Files.walk(root, MAX_DEPTH).skip(1)) {
-            paths.forEach(file -> {
-                if(Files.isDirectory(file)) {
-                    System.out.println("FOLDER: \"" + file + "\"");
-                } else if(this.isVideoFile(file)) {
-                    System.out.println("VIDEO: \"" + file + "\"");
-                } else if(this.isPicFile(file)){
-                    System.out.println("PIC: \"" + file + "\"");
-                } else {
-                    System.out.println("INVALID: \"" + file + "\"");
+            paths.filter(Files::isDirectory).forEach(movieFolder -> {
+                String movieName = null;
+                String movieYear = null;
+                String movieTmdbId = null;
+
+                Matcher folderMatcher = FOLDER_NAME_PATTERN.matcher(movieFolder.getFileName().toString());
+
+                if(folderMatcher.matches()) {
+                    movieName = folderMatcher.group(1);
+                    movieYear = folderMatcher.group(3) != null ? folderMatcher.group(3) : folderMatcher.group(5);
+                    movieTmdbId = folderMatcher.group(2) != null ? folderMatcher.group(2) : folderMatcher.group(4);
+                }
+
+                try(Stream<Path> movieFiles = Files.list(movieFolder)) {
+                    final String name = movieName;
+                    final String year = movieYear;
+                    final String tmdbId = movieTmdbId;
+
+                    movieFiles.forEach(file -> {
+                        if(this.isVideoFile(file))
+                            this.processMovieFile(file, name, year, tmdbId);
+                        else if(this.isPicFile(file))
+                            LOGGER.info("Artwork for movie {}: {}", name, file);
+                    });
+                } catch (IOException exception) {
+                    LOGGER.error("Error scanning movie folder: {}", movieFolder, exception);
                 }
             });
+
+            // /Movies/F1 (2025).mkv
         }
     }
 
@@ -93,8 +116,8 @@ public class MediaScannerService implements IMediaScannerService {
         }
     }
 
-    private void processMovieFile() {
-
+    private void processMovieFile(Path moviePath, String movieName, String movieYear, String tmdbId) {
+        LOGGER.info("{} || {} || {} || {}", moviePath, movieName, movieYear, tmdbId);
     }
 
     private void processEpisodeFile() {
@@ -113,13 +136,6 @@ public class MediaScannerService implements IMediaScannerService {
         if(VIDEO_EXTENSIONS.stream().noneMatch(path.getFileName().toString().toLowerCase()::endsWith)) return false;
 
         return true;
-    }
-
-    private String getYearFromString(String string) {
-        Pattern pattern = Pattern.compile("(19|20)\\\\d{2}");
-        Matcher matcher = pattern.matcher(string);
-        
-        return matcher.find() ? matcher.group() : null;
     }
 }
 
