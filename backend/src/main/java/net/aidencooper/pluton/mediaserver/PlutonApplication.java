@@ -1,6 +1,6 @@
 package net.aidencooper.pluton.mediaserver;
 
-import net.aidencooper.pluton.mediaserver.service.port.IMediaScannerService;
+import net.aidencooper.pluton.mediaserver.media.scanner.port.IMediaScannerService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
