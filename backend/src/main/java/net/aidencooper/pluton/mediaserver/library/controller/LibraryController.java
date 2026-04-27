@@ -8,8 +8,8 @@ import net.aidencooper.pluton.mediaserver.library.domain.dto.LibraryCreateReques
 import net.aidencooper.pluton.mediaserver.library.domain.dto.LibraryDTO;
 import net.aidencooper.pluton.mediaserver.library.domain.dto.LibraryUpdateRequestDTO;
 import net.aidencooper.pluton.mediaserver.library.domain.entity.Library;
-import net.aidencooper.pluton.mediaserver.library.mapper.port.ILibraryMapper;
-import net.aidencooper.pluton.mediaserver.library.service.port.ILibraryService;
+import net.aidencooper.pluton.mediaserver.library.mapper.LibraryMapper;
+import net.aidencooper.pluton.mediaserver.library.service.LibraryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +20,10 @@ import java.util.List;
 @RequestMapping(path = "/api/v1/libraries")
 @Getter
 public class LibraryController {
-    private final ILibraryService libraryService;
-    private final ILibraryMapper libraryMapper;
+    private final LibraryService libraryService;
+    private final LibraryMapper libraryMapper;
 
-    public LibraryController(ILibraryService libraryService, ILibraryMapper libraryMapper) {
+    public LibraryController(LibraryService libraryService, LibraryMapper libraryMapper) {
         this.libraryService = libraryService;
         this.libraryMapper = libraryMapper;
     }
