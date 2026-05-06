@@ -39,7 +39,6 @@ public class MediaMapper {
 
         return new Episode(
                 id,
-                episode.showTitle(),
                 episode.season(),
                 episode.episode()
         );

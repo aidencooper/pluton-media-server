@@ -36,6 +36,8 @@ public class MediaAssemblerService {
 
                     return new Show(
                             showId,
+                            Title.of("Unknown"),
+                            DisplayTitle.of("Unknown"),
                             seasons
                     );
                 }).sorted(Comparator.comparing(Show::id))
