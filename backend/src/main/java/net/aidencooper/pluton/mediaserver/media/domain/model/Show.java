@@ -5,5 +5,7 @@ import java.util.UUID;
 
 public record Show(
         UUID id,
+        Title title,
+        DisplayTitle displayTitle,
         List<Season> seasons
 ) {}

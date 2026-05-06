@@ -12,12 +12,14 @@ import java.util.stream.Collectors;
 @Service
 public class MediaAssemblerService {
     public MediaSnapshot assemble(List<Movie> movies, List<Episode> episodes) {
+        // <Show UUID, <Season Number, Episode List>>
         Map<UUID, Map<Integer, List<Episode>>> byShowAndSeason = episodes.stream()
                 .collect(Collectors.groupingBy(
-                        Episode::showId,
-                        Collectors.groupingBy(Episode::season)
+                        Episode::showId, // Group episodes by show
+                        Collectors.groupingBy(Episode::season) // Group episodes by season
                 ));
 
+        // Map UUID's to the Show domain object
         List<Show> shows = byShowAndSeason.entrySet().stream()
                 .map(showEntry -> {
                     UUID showId = showEntry.getKey();
@@ -26,29 +28,19 @@ public class MediaAssemblerService {
                             .map(seasonEntry -> new Season(
                                     showId,
                                     seasonEntry.getKey(),
-                                    this.sortEpisodes(seasonEntry.getValue())
+                                    seasonEntry.getValue().stream() // Sort episodes in season
+                                            .sorted(Comparator.comparingInt(Episode::episode))
+                                            .toList()
                             )).sorted(Comparator.comparingInt(Season::season))
                             .toList();
-
-                    String title = showEntry.getValue().values().stream()
-                            .flatMap(List::stream)
-                            .map(Episode::showTitle)
-                            .findFirst()
-                            .orElse("Unknown");
 
                     return new Show(
                             showId,
                             seasons
                     );
-                }).sorted(Comparator.comparing(show -> show.displayTitle().value()))
+                }).sorted(Comparator.comparing(Show::id))
                 .toList();
 
         return new MediaSnapshot(movies, shows);
-    }
-
-    private List<Episode> sortEpisodes(List<Episode> episodes) {
-        return episodes.stream()
-                .sorted(Comparator.comparingInt(Episode::episode))
-                .toList();
     }
 }
