@@ -5,7 +5,8 @@ import java.util.UUID;
 
 public record Movie(
         UUID id,
-        String title,
+        Title title,
+        DisplayTitle displayTitle,
         Optional<String> externalId,
         Optional<Integer> year
 ) implements Media {}

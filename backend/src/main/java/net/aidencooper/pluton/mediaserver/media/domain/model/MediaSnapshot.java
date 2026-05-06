@@ -1,9 +1,8 @@
 package net.aidencooper.pluton.mediaserver.media.domain.model;
 
 import java.util.List;
-import java.util.UUID;
 
-public record Show(
-        UUID id,
-        List<Season> seasons
+public record MediaSnapshot(
+        List<Movie> movies,
+        List<Show> shows
 ) {}

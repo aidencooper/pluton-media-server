@@ -1,8 +1,6 @@
 package net.aidencooper.pluton.mediaserver.media.domain.service;
 
-import net.aidencooper.pluton.mediaserver.media.domain.model.Episode;
-import net.aidencooper.pluton.mediaserver.media.domain.model.Season;
-import net.aidencooper.pluton.mediaserver.media.domain.model.Show;
+import net.aidencooper.pluton.mediaserver.media.domain.model.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -13,17 +11,16 @@ import java.util.stream.Collectors;
 
 @Service
 public class MediaAssemblerService {
-    public List<Show> assembleShows(List<Episode> episodes, Map<UUID, String> shows) {
-        Map<UUID, Map<Integer, List<Episode>>> combined = episodes.stream()
+    public MediaSnapshot assemble(List<Movie> movies, List<Episode> episodes) {
+        Map<UUID, Map<Integer, List<Episode>>> byShowAndSeason = episodes.stream()
                 .collect(Collectors.groupingBy(
                         Episode::showId,
                         Collectors.groupingBy(Episode::season)
                 ));
 
-        return combined.entrySet().stream()
+        List<Show> shows = byShowAndSeason.entrySet().stream()
                 .map(showEntry -> {
                     UUID showId = showEntry.getKey();
-                    String title = shows.getOrDefault(showId, "Unknown");
 
                     List<Season> seasons = showEntry.getValue().entrySet().stream()
                             .map(seasonEntry -> new Season(
@@ -33,9 +30,20 @@ public class MediaAssemblerService {
                             )).sorted(Comparator.comparingInt(Season::season))
                             .toList();
 
-                    return new Show(showId, title, seasons);
-                }).sorted(Comparator.comparing(Show::title))
+                    String title = showEntry.getValue().values().stream()
+                            .flatMap(List::stream)
+                            .map(Episode::showTitle)
+                            .findFirst()
+                            .orElse("Unknown");
+
+                    return new Show(
+                            showId,
+                            seasons
+                    );
+                }).sorted(Comparator.comparing(show -> show.displayTitle().value()))
                 .toList();
+
+        return new MediaSnapshot(movies, shows);
     }
 
     private List<Episode> sortEpisodes(List<Episode> episodes) {

@@ -3,8 +3,7 @@ package net.aidencooper.pluton.mediaserver.media.domain.mapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.aidencooper.pluton.mediaserver.media.domain.model.*;
-import net.aidencooper.pluton.mediaserver.media.domain.service.MovieIdentityService;
-import net.aidencooper.pluton.mediaserver.media.domain.service.ShowIdentityService;
+import net.aidencooper.pluton.mediaserver.media.domain.service.MediaIdentityService;
 import net.aidencooper.pluton.mediaserver.media.ingestion.model.ParsedEpisode;
 import net.aidencooper.pluton.mediaserver.media.ingestion.model.ParsedMedia;
 import net.aidencooper.pluton.mediaserver.media.ingestion.model.ParsedMovie;
@@ -16,30 +15,31 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Getter
 public class MediaMapper {
-    private final MovieIdentityService movieIdentityService;
-    private final ShowIdentityService showIdentityService;
+    private final MediaIdentityService mediaIdentityService;
 
     public Movie toMovie(ParsedMovie movie) {
-        UUID id = this.getMovieIdentityService().generateId(
+        UUID id = this.getMediaIdentityService().movieId(
                 movie.title(),
                 movie.year().orElse(null)
         );
 
         return new Movie(
                 id,
-                movie.title(),
+                Title.of(movie.title()),
+                DisplayTitle.of(movie.title()),
                 movie.externalId(),
                 movie.year()
         );
     }
 
     public Episode toEpisode(ParsedEpisode episode) {
-        UUID id = this.getShowIdentityService().generateId(
+        UUID id = this.getMediaIdentityService().showId(
                 episode.showTitle()
         );
 
         return new Episode(
                 id,
+                episode.showTitle(),
                 episode.season(),
                 episode.episode()
         );
