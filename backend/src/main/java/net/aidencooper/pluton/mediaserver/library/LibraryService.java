@@ -1,11 +1,10 @@
-package net.aidencooper.pluton.mediaserver.library.service;
+package net.aidencooper.pluton.mediaserver.library;
 
 import lombok.RequiredArgsConstructor;
 import net.aidencooper.pluton.mediaserver.library.domain.LibraryCreateRequest;
 import net.aidencooper.pluton.mediaserver.library.domain.LibraryUpdateRequest;
 import net.aidencooper.pluton.mediaserver.library.domain.entity.Library;
 import net.aidencooper.pluton.mediaserver.library.exception.LibraryNotFoundException;
-import net.aidencooper.pluton.mediaserver.library.repository.LibraryRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;

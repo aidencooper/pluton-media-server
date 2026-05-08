@@ -1,4 +1,4 @@
-package net.aidencooper.pluton.mediaserver.library.controller;
+package net.aidencooper.pluton.mediaserver.library;
 
 import jakarta.validation.Valid;
 import lombok.Getter;
@@ -8,8 +8,6 @@ import net.aidencooper.pluton.mediaserver.library.domain.dto.LibraryCreateReques
 import net.aidencooper.pluton.mediaserver.library.domain.dto.LibraryDTO;
 import net.aidencooper.pluton.mediaserver.library.domain.dto.LibraryUpdateRequestDTO;
 import net.aidencooper.pluton.mediaserver.library.domain.entity.Library;
-import net.aidencooper.pluton.mediaserver.library.mapper.LibraryMapper;
-import net.aidencooper.pluton.mediaserver.library.service.LibraryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

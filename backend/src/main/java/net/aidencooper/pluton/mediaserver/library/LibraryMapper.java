@@ -1,4 +1,4 @@
-package net.aidencooper.pluton.mediaserver.library.mapper;
+package net.aidencooper.pluton.mediaserver.library;
 
 import net.aidencooper.pluton.mediaserver.library.domain.LibraryCreateRequest;
 import net.aidencooper.pluton.mediaserver.library.domain.LibraryUpdateRequest;
