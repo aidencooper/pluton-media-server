@@ -1,4 +1,4 @@
-package net.aidencooper.pluton.mediaserver.library.domain.entity;
+package net.aidencooper.pluton.mediaserver.library.domain;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,7 +1,7 @@
 package net.aidencooper.pluton.mediaserver.library;
 
-import net.aidencooper.pluton.mediaserver.library.domain.entity.LibraryType;
-import net.aidencooper.pluton.mediaserver.library.domain.entity.Library;
+import net.aidencooper.pluton.mediaserver.library.domain.LibraryType;
+import net.aidencooper.pluton.mediaserver.library.domain.Library;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

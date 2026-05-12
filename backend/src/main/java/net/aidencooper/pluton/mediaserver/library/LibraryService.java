@@ -1,9 +1,10 @@
 package net.aidencooper.pluton.mediaserver.library;
 
 import lombok.RequiredArgsConstructor;
-import net.aidencooper.pluton.mediaserver.library.domain.LibraryCreateRequest;
-import net.aidencooper.pluton.mediaserver.library.domain.LibraryUpdateRequest;
-import net.aidencooper.pluton.mediaserver.library.domain.entity.Library;
+import net.aidencooper.pluton.mediaserver.library.domain.request.LibraryCreateRequest;
+import net.aidencooper.pluton.mediaserver.library.domain.request.LibraryUpdateRequest;
+import net.aidencooper.pluton.mediaserver.library.domain.LibraryDTO;
+import net.aidencooper.pluton.mediaserver.library.domain.Library;
 import net.aidencooper.pluton.mediaserver.library.exception.LibraryNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -12,30 +13,24 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class LibraryService {
+public class LibraryService implements ILibraryService {
+    private final LibraryMapper libraryMapper;
     private final LibraryRepository libraryRepository;
 
-    public List<Library> getLibraries() {
-        return this.libraryRepository.findAll();
+    @Override
+    public List<LibraryDTO> getLibraries() {
+        return this.libraryRepository.findAll().stream()
+                .map(this.libraryMapper::toDTO)
+                .toList();
     }
 
-    public Library createLibrary(LibraryCreateRequest request) {
-        Instant now = Instant.now();
-
-        Library library = new Library(
-                null,
-                now,
-                now,
-                request.name(),
-                request.type(),
-                request.folderPaths(),
-                request.enabled()
-        );
-
-        return this.libraryRepository.save(library);
+    public LibraryDTO createLibrary(LibraryCreateRequest request) {
+        Library library = this.libraryMapper.toEntity(request);
+        Library savedLibrary = this.libraryRepository.save(library);
+        return this.libraryMapper.toDTO(savedLibrary);
     }
 
-    public Library updateLibrary(Long id, LibraryUpdateRequest request) {
+    public void updateLibrary(Long id, LibraryUpdateRequest request) {
         Library library = this.libraryRepository
                 .findById(id)
                 .orElseThrow(() -> new LibraryNotFoundException(id));
@@ -44,10 +39,9 @@ public class LibraryService {
         library.setType(request.type());
         library.setFolderPaths(request.folderPaths());
         library.setEnabled(request.enabled());
-
         library.setUpdatedAt(Instant.now());
 
-        return this.libraryRepository.save(library);
+        this.libraryRepository.save(library);
     }
 
     public void deleteLibrary(Long id) {

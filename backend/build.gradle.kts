@@ -18,9 +18,12 @@ repositories {
 	mavenCentral()
 }
 
+val mockitoAgent = configurations.create("mockitoAgent")
+
 extra["springModulithVersion"] = "2.0.6"
 
 dependencies {
+	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 	annotationProcessor("org.projectlombok:lombok")
 
 	compileOnly("org.projectlombok:lombok")
@@ -28,6 +31,7 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
 	implementation("org.hibernate.orm:hibernate-community-dialects")
+	implementation("org.mapstruct:mapstruct:1.6.3")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-restclient")
@@ -50,6 +54,10 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 	testImplementation("org.springframework.modulith:spring-modulith-starter-test")
 
+	mockitoAgent("org.mockito:mockito-core") {
+		isTransitive = false
+	}
+
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -61,4 +69,6 @@ dependencyManagement {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+
+	jvmArgs("-javaagent:${mockitoAgent.asPath}")
 }

@@ -3,7 +3,7 @@ package net.aidencooper.pluton.mediaserver.config.config.properties;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.aidencooper.pluton.mediaserver.directory.PlutonDirectory;
+import net.aidencooper.pluton.mediaserver.config.config.properties.directory.PlutonDirectory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 

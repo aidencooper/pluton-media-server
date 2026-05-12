@@ -1,6 +1,4 @@
-package net.aidencooper.pluton.mediaserver.library.domain.dto;
-
-import net.aidencooper.pluton.mediaserver.library.domain.entity.LibraryType;
+package net.aidencooper.pluton.mediaserver.library.domain;
 
 import java.util.Set;
 
