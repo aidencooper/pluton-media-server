@@ -1,9 +1,11 @@
 package net.aidencooper.pluton.mediaserver.library.domain.request;
 
+import lombok.Builder;
 import net.aidencooper.pluton.mediaserver.library.domain.LibraryType;
 
 import java.util.Set;
 
+@Builder
 public record LibraryCreateRequest(
         String name,
         LibraryType type,

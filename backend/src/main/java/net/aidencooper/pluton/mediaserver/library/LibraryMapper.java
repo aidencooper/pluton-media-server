@@ -6,12 +6,14 @@ import net.aidencooper.pluton.mediaserver.library.domain.request.LibraryCreateRe
 import net.aidencooper.pluton.mediaserver.library.domain.request.LibraryUpdateRequest;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface LibraryMapper {
     LibraryDTO toDTO(Library library);
 
-    Library toEntity(LibraryDTO libraryDTO);
     Library toEntity(LibraryCreateRequest request);
     Library toEntity(LibraryUpdateRequest request);
+
+    void updateEntityFromRequest(LibraryUpdateRequest request, @MappingTarget Library library);
 }

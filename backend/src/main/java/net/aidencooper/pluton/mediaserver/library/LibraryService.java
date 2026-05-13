@@ -27,21 +27,19 @@ public class LibraryService implements ILibraryService {
     public LibraryDTO createLibrary(LibraryCreateRequest request) {
         Library library = this.libraryMapper.toEntity(request);
         Library savedLibrary = this.libraryRepository.save(library);
-        return this.libraryMapper.toDTO(savedLibrary);
+        LibraryDTO libraryDTO = this.libraryMapper.toDTO(savedLibrary);
+        return libraryDTO;
     }
 
-    public void updateLibrary(Long id, LibraryUpdateRequest request) {
+    public LibraryDTO updateLibrary(Long id, LibraryUpdateRequest request) {
         Library library = this.libraryRepository
                 .findById(id)
                 .orElseThrow(() -> new LibraryNotFoundException(id));
 
-        library.setName(request.name());
-        library.setType(request.type());
-        library.setFolderPaths(request.folderPaths());
-        library.setEnabled(request.enabled());
-        library.setUpdatedAt(Instant.now());
-
-        this.libraryRepository.save(library);
+        this.libraryMapper.updateEntityFromRequest(request, library);
+        Library updatedLibrary = this.libraryRepository.save(library);
+        LibraryDTO libraryDTO = this.libraryMapper.toDTO(updatedLibrary);
+        return libraryDTO;
     }
 
     public void deleteLibrary(Long id) {

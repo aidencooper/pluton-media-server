@@ -13,6 +13,7 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "libraries")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Library {
