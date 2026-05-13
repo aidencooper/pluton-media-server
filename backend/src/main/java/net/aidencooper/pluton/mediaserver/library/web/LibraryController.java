@@ -1,8 +1,9 @@
-package net.aidencooper.pluton.mediaserver.library;
+package net.aidencooper.pluton.mediaserver.library.web;
 
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.aidencooper.pluton.mediaserver.library.application.LibraryService;
 import net.aidencooper.pluton.mediaserver.library.domain.request.LibraryCreateRequest;
 import net.aidencooper.pluton.mediaserver.library.domain.request.LibraryUpdateRequest;
 import net.aidencooper.pluton.mediaserver.library.domain.LibraryDTO;

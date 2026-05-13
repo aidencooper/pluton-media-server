@@ -1,4 +1,4 @@
-package net.aidencooper.pluton.mediaserver.library;
+package net.aidencooper.pluton.mediaserver.library.application;
 
 import net.aidencooper.pluton.mediaserver.library.domain.Library;
 import net.aidencooper.pluton.mediaserver.library.domain.LibraryDTO;

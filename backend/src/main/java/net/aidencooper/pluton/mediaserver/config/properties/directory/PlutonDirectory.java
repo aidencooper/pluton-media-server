@@ -1,4 +1,4 @@
-package net.aidencooper.pluton.mediaserver.config.config.properties.directory;
+package net.aidencooper.pluton.mediaserver.config.properties.directory;
 
 import lombok.Getter;
 

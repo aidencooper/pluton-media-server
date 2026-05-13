@@ -1,4 +1,4 @@
-package net.aidencooper.pluton.mediaserver.library;
+package net.aidencooper.pluton.mediaserver.library.persistence;
 
 import net.aidencooper.pluton.mediaserver.library.domain.LibraryType;
 import net.aidencooper.pluton.mediaserver.library.domain.Library;

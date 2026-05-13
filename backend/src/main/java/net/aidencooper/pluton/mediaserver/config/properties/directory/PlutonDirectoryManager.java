@@ -1,6 +1,6 @@
-package net.aidencooper.pluton.mediaserver.config.config.properties.directory;
+package net.aidencooper.pluton.mediaserver.config.properties.directory;
 
-import net.aidencooper.pluton.mediaserver.config.config.properties.PlutonProperties;
+import net.aidencooper.pluton.mediaserver.config.properties.PlutonProperties;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
